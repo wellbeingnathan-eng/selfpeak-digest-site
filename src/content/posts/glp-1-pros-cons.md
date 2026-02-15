@@ -11,7 +11,7 @@ GLP-1 medications (like semaglutide and tirzepatide) changed the conversation ar
 
 ## The upsides (what GLP-1s can improve)
 
-public/images/GLP150226Pros.png
+![GLP-1 upsides](/images/GLP150226Pros.png)
 
 Many people report:
 - quieter appetite / fewer cravings (“food noise” goes down)
@@ -24,7 +24,7 @@ In clinical settings, GLP-1s are also associated with improvements in:
 
 ## The downsides (what to watch out for)
 
-public/images/GLP150226Cons.png
+![GLP-1 downsides](/images/GLP150226Cons.png)
 
 Common side effects:
 - nausea, constipation/diarrhea, reflux
