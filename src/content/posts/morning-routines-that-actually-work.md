@@ -3,7 +3,7 @@ title: "Morning Routines That Actually Work: What the Evidence Says"
 description: "Most morning routine advice is anecdotal. Here's what peer-reviewed research tells us about the habits that genuinely improve energy, focus, and long-term health."
 date: 2026-02-01
 tags: ["habits", "sleep", "productivity", "evidence-based"]
-cover: "/images/posts/morning-routines/cover.jpg"
+cover: "public/images/Routines010226.png"
 draft: false
 ---
 
