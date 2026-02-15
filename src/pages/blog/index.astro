@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { estimateReadingTime } from '../../lib/utils';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout
+  title="Blog"
+  description="Evidence-based articles on health, behavior, recovery, and everyday wellness."
+>
+  <section class="bg-primary-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-14">
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 mb-3">All articles</h1>
+      <p class="text-neutral-500 text-lg max-w-xl">
+        Research-backed reads on health, behavior, and recovery. Written clearly, sourced properly.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    {posts.length === 0 ? (
+      <div class="text-center py-20">
+        <p class="text-neutral-400 text-lg">No articles yet. Check back soon.</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            tags={post.data.tags}
+            cover={post.data.cover}
+            slug={post.id}
+            readingTime={estimateReadingTime(post.body || '')}
+          />
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>

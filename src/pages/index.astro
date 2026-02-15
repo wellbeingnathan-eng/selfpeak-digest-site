@@ -1,0 +1,154 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import PostCard from '../components/PostCard.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
+import { estimateReadingTime } from '../lib/utils';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const latestPosts = allPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 6);
+---
+
+<Layout>
+  <section class="bg-primary-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28">
+      <div class="max-w-2xl mx-auto text-center">
+        <p class="text-primary-700 font-semibold text-xs tracking-[0.2em] uppercase mb-5">Evidence-First Health Digest</p>
+        <h1 class="text-4xl sm:text-5xl font-bold text-neutral-900 leading-[1.15] mb-6">
+          Health insights - clean, calm,<br class="hidden sm:block" /> and actually useful.
+        </h1>
+        <p class="text-lg text-neutral-600 leading-relaxed mb-10 max-w-lg mx-auto">
+          Short reads on health, behavior, and recovery - backed by research, written in plain English. No hype. No panic.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="/blog"
+            class="inline-flex items-center px-7 py-3 rounded-lg bg-primary-700 text-white font-medium text-sm hover:bg-primary-800 transition-colors active:scale-[0.98]"
+          >
+            Read the blog
+          </a>
+          <a
+            href="#subscribe"
+            class="inline-flex items-center px-7 py-3 rounded-lg border border-neutral-300 bg-white text-neutral-700 font-medium text-sm hover:border-neutral-400 hover:bg-neutral-50 transition-colors"
+          >
+            Get email updates
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white border-y border-neutral-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-3 gap-8 text-center">
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-neutral-900">50,000+</p>
+          <p class="text-sm text-neutral-500 mt-1">Readers</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-neutral-900">100%</p>
+          <p class="text-sm text-neutral-500 mt-1">Research-backed</p>
+        </div>
+        <div>
+          <p class="text-2xl sm:text-3xl font-bold text-neutral-900">5 min</p>
+          <p class="text-sm text-neutral-500 mt-1">Average read</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-primary-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-bold text-neutral-900 mb-3">Our editorial standards</h2>
+        <p class="text-neutral-600 max-w-lg mx-auto">
+          Every article follows four principles. No exceptions.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl p-6 border border-neutral-100 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-neutral-900 mb-2">Evidence, not vibes</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">Every claim references peer-reviewed research. If the evidence is weak, we say so.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-neutral-100 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-neutral-900 mb-2">Practical, not perfect</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">We write for real people with real constraints. Small, sustainable changes over heroic overhauls.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-neutral-100 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-neutral-900 mb-2">No shame language</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">Health is complex. We don't moralize, guilt-trip, or use fear to motivate.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-neutral-100 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-neutral-900 mb-2">Clear boundaries</h3>
+          <p class="text-sm text-neutral-500 leading-relaxed">We provide education, not medical advice. When in doubt, we say "talk to your doctor."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <p class="text-xs font-semibold text-primary-700 uppercase tracking-[0.15em] mb-4">Editorial Note</p>
+      <p class="text-neutral-600 leading-relaxed text-base">
+        This digest exists because health information online is overwhelmingly noisy. Between clickbait headlines, influencer anecdotes, and supplement marketing dressed as science, it's hard to know what's worth your time. We take a different approach: we publish careful summaries, cite reputable sources, and flag uncertainty. We avoid miracle claims and fear-driven headlines. We cover sleep, nutrition, movement, habits, and mental health - without the sensationalism.
+      </p>
+      <p class="text-sm text-neutral-400 mt-6">
+        Questions or corrections? <a href="mailto:hello@yourdomain.com" class="text-primary-700 hover:underline">hello@yourdomain.com</a>
+      </p>
+    </div>
+  </section>
+
+  {latestPosts.length > 0 && (
+    <section class="bg-white border-t border-neutral-100">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="flex items-center justify-between mb-10">
+          <h2 class="text-2xl sm:text-3xl font-bold text-neutral-900">Latest articles</h2>
+          <a href="/blog" class="text-sm text-primary-700 hover:text-primary-800 font-medium transition-colors">
+            View all &rarr;
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {latestPosts.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              tags={post.data.tags}
+              cover={post.data.cover}
+              slug={post.id}
+              readingTime={estimateReadingTime(post.body || '')}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section id="subscribe" class="bg-primary-50">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <SubscribeForm />
+    </div>
+  </section>
+</Layout>

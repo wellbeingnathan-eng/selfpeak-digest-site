@@ -1,0 +1,177 @@
+---
+import { SUBSCRIBE_ENDPOINT } from '../lib/utils';
+
+interface Props {
+  variant?: 'default' | 'compact';
+}
+
+const { variant = 'default' } = Astro.props;
+const isCompact = variant === 'compact';
+---
+
+<div
+  class:list={[
+    'subscribe-form-wrapper rounded-2xl',
+    isCompact
+      ? 'bg-neutral-50 border border-neutral-200 p-6 sm:p-8'
+      : 'bg-white border border-neutral-200 p-8 sm:p-10 shadow-sm',
+  ]}
+>
+  {!isCompact && (
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-bold text-neutral-900 mb-3">Stay in the loop</h2>
+      <p class="text-neutral-500 text-sm max-w-md mx-auto leading-relaxed">
+        Evidence-based health insights, written clearly and sourced properly. No spam, no hype - unsubscribe anytime.
+      </p>
+    </div>
+  )}
+
+  {isCompact && (
+    <div class="mb-5">
+      <h3 class="text-lg font-semibold text-neutral-900 mb-1">Enjoyed this article?</h3>
+      <p class="text-sm text-neutral-500">Get more like it - straight to your inbox.</p>
+    </div>
+  )}
+
+  <form
+    class="subscribe-form space-y-4"
+    data-endpoint={SUBSCRIBE_ENDPOINT}
+    novalidate
+  >
+    <div class:list={[isCompact ? 'space-y-3' : 'sm:flex sm:gap-3 sm:space-y-0 space-y-3']}>
+      <input
+        type="text"
+        name="name"
+        placeholder="First name (optional)"
+        class:list={[
+          'w-full px-4 py-3 rounded-lg border border-neutral-200 bg-white text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 transition-shadow',
+          !isCompact && 'sm:flex-1',
+        ]}
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="your@email.com"
+        required
+        class:list={[
+          'w-full px-4 py-3 rounded-lg border border-neutral-200 bg-white text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 transition-shadow',
+          !isCompact && 'sm:flex-1',
+        ]}
+      />
+    </div>
+
+    <label class="flex items-start gap-2.5 cursor-pointer">
+      <input
+        type="checkbox"
+        name="consent"
+        required
+        class="mt-0.5 w-4 h-4 rounded border-neutral-300 text-primary-700 focus:ring-primary-500/20"
+      />
+      <span class="text-xs text-neutral-500 leading-relaxed">
+        I agree to receive emails from this digest. I can unsubscribe anytime. See our
+        <a href="/privacy" class="text-primary-700 hover:underline">Privacy Policy</a>.
+      </span>
+    </label>
+
+    <div class:list={[!isCompact && 'sm:flex sm:items-center sm:justify-between sm:gap-4']}>
+      <button
+        type="submit"
+        class:list={[
+          'w-full py-3 px-6 rounded-lg bg-primary-700 text-white text-sm font-medium hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:ring-offset-2 transition-all active:scale-[0.98]',
+          !isCompact && 'sm:w-auto',
+        ]}
+      >
+        Subscribe
+      </button>
+      {!isCompact && (
+        <p class="text-xs text-neutral-400 mt-3 sm:mt-0">
+          Join 50,000+ readers. Occasional emails. Unsubscribe anytime.
+        </p>
+      )}
+    </div>
+    {isCompact && (
+      <p class="text-xs text-neutral-400">
+        Join 50,000+ readers. Occasional emails. Unsubscribe anytime.
+      </p>
+    )}
+  <form
+  class="subscribe-form"
+  data-endpoint="https://hook.eu1.make.com/db6kd6bf3yh1tibr7rl43rvt17qdtvmb"
+>
+  <div class="space-y-4">
+    <input
+      type="text"
+      name="name"
+      placeholder="First name"
+      class="w-full px-4 py-3 border rounded-lg"
+    />
+
+    <input
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      required
+      class="w-full px-4 py-3 border rounded-lg"
+    />
+
+    <label class="flex items-start gap-2 text-sm text-neutral-600">
+      <input type="checkbox" name="consent" required />
+      I agree to receive email updates and accept the Privacy Policy.
+    </label>
+
+    <button
+      type="submit"
+      class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition"
+    >
+      Subscribe
+    </button>
+  </div>
+</form>
+
+<div class="subscribe-success hidden mt-6">
+  <div class="text-center py-6">
+    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 mb-4">
+      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    <h3 class="text-lg font-semibold text-neutral-900 mb-1">You're in.</h3>
+    <p class="text-sm text-neutral-500">
+      Check your inbox to confirm your subscription. Welcome aboard.
+    </p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.subscribe-form').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const wrapper = form.parentElement;
+      const emailInput = form.querySelector('input[name="email"]');
+      const consentInput = form.querySelector('input[name="consent"]');
+      const nameInput = form.querySelector('input[name="name"]');
+
+      if (!emailInput?.value.trim() || !consentInput?.checked) return;
+
+      const endpoint = form.dataset.endpoint;
+
+      try {
+        await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: nameInput?.value.trim() || '',
+            email: emailInput.value.trim(),
+            consent: consentInput.checked,
+          }),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      form.classList.add('hidden');
+      wrapper.querySelector('.subscribe-success')?.classList.remove('hidden');
+    });
+  });
+</script>

@@ -1,0 +1,73 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SubscribeForm from '../../components/SubscribeForm.astro';
+import { formatDate, estimateReadingTime } from '../../lib/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const readingTime = estimateReadingTime(post.body || '');
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.cover}
+  type="article"
+  publishedTime={post.data.date.toISOString()}
+  tags={post.data.tags}
+>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
+    <header class="mb-10">
+      <div class="flex items-center gap-3 text-sm text-neutral-400 mb-4">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <span class="w-1 h-1 rounded-full bg-neutral-300"></span>
+        <span>{readingTime} min read</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 leading-tight mb-4">
+        {post.data.title}
+      </h1>
+
+      <p class="text-lg text-neutral-500 leading-relaxed">
+        {post.data.description}
+      </p>
+
+      {post.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-5">
+          {post.data.tags.map((tag: string) => (
+            <span class="text-xs px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-500 font-medium">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {post.data.cover && (
+        <div class="mt-8 aspect-[2/1] rounded-xl overflow-hidden bg-neutral-100">
+          <img
+            src={post.data.cover}
+            alt={post.data.title}
+            class="w-full h-full object-cover"
+          />
+        </div>
+      )}
+    </header>
+
+    <div class="prose prose-neutral max-w-none">
+      <Content />
+    </div>
+
+    <hr class="my-12 border-neutral-200" />
+
+    <SubscribeForm variant="compact" />
+  </article>
+</Layout>

@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
+---
+
+<Layout title="Subscribe" description="Get evidence-based health insights delivered to your inbox.">
+  <section class="bg-primary-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-14">
+      <h1 class="text-3xl sm:text-4xl font-bold text-neutral-900 mb-3">Get email updates</h1>
+      <p class="text-neutral-500 text-lg max-w-xl">
+        Evidence-based health insights, written clearly and sourced properly. Straight to your inbox.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-primary-50 pb-20">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SubscribeForm />
+    </div>
+  </section>
+</Layout>
